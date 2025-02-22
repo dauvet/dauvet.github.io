@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,14 +10,26 @@
             margin: 0;
             padding: 0;
             text-align: center;
-            background-color: #f4f4f4;
+            background-color: black;
+            color: #0f0;
+            overflow: hidden;
+        }
+        .matrix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: black;
+            z-index: -1;
         }
         .container {
+            position: relative;
             width: 60%;
             margin: auto;
             padding: 20px;
-            background: white;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            background: rgba(0, 0, 0, 0.9);
+            box-shadow: 0 0 10px rgba(0,255,0,0.5);
             margin-top: 50px;
             border-radius: 10px;
         }
@@ -25,33 +37,59 @@
             width: 150px;
             border-radius: 50%;
             margin-top: 20px;
+            border: 2px solid #0f0;
         }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
+        h1, p, .social-links a {
+            color: #0f0;
         }
         .social-links a {
             display: inline-block;
             margin: 10px;
             text-decoration: none;
-            color: #0073e6;
             font-size: 20px;
         }
     </style>
 </head>
 <body>
+    <canvas class="matrix"></canvas>
     <div class="container">
         <img src="https://via.placeholder.com/150" alt="Avatar" class="profile-img">
         <h1>Nick - Senior Software Engineer</h1>
         <p>Developer | Tech Enthusiast | Problem Solver</p>
-        <p>Tôi là một lập trình viên với nhiều năm kinh nghiệm phát triển phần mềm, làm việc với các công nghệ hiện đại.</p>
+        <p>I am a software engineer with years of experience in developing high-quality applications and solving complex technical challenges.</p>
         <div class="social-links">
             <a href="#" target="_blank">GitHub</a>
             <a href="#" target="_blank">LinkedIn</a>
             <a href="#" target="_blank">Twitter</a>
         </div>
     </div>
+    <script>
+        const canvas = document.querySelector('.matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        const letters = '0101010101010101';
+        const matrix = letters.split('');
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+        const drops = Array(Math.floor(columns)).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#0f0';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrix[Math.floor(Math.random() * matrix.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.95) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+        setInterval(drawMatrix, 50);
+    </script>
 </body>
 </html>
